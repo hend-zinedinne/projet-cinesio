@@ -4,8 +4,10 @@ include __DIR__ . "/../src/includes/header.php";
 include __DIR__ . "/../src/data/data.php";
 ?>
 <main>
-    <h2>Catalogue des Films</h2>
-    <p>Il y a actuellement <span class="nombre-films"><?= count($films) ?></span> films dans le catalogue.</p>
+    <div class="catalogue-info">
+        <h2>Catalogue des Films</h2>
+        <p>Il y a actuellement <span class="violet"><?= count($films) ?></span> films dans le catalogue.</p>
+    </div>
 
     <div class="catalogue">
         <?php foreach ($films as $film): ?>
@@ -17,7 +19,7 @@ include __DIR__ . "/../src/data/data.php";
                     <p><?= $film["genre"] ?> - <?= $film["duree"] ?></p>
                     <p class="synopsis"><?= $film["synopsis"] ?></p>
                 </div>
-                <div class="card-button">Détails</div>
+                <a href="#" class="card-button">Détails</a>
             </div>
         <?php endforeach; ?>
     </div>
