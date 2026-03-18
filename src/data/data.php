@@ -102,4 +102,6 @@ $films = [
     ]
 ];
 
+$nombreFilms = count($films);
+
 ?>

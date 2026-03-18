@@ -7,7 +7,7 @@ include __DIR__ . "/../src/lib/functions.php";
 <main>
     <div class="catalogue-info">
         <h2>Catalogue des Films</h2>
-        <p>Il y a actuellement <span class="violet"><?= count($films) ?></span> films dans le catalogue.</p>
+        <p>Il y a actuellement <span class="violet"><?= $nombreFilms ?></span> films dans le catalogue.</p>
     </div>
 
     <div class="catalogue">
@@ -18,7 +18,7 @@ include __DIR__ . "/../src/lib/functions.php";
                 <div class="card-info">
                     <h3><?= $film["titre"] ?></h3>
                     <p><?= $film["genre"] ?> • <?= convertirMinutes($film["duree"]) ?></p>
-                    <p class="synopsis"><?= $film["synopsis"] ?></p>
+                    <p><?= $film["synopsis"] ?></p>
                 </div>
                 <a href="#" class="card-button">Détails</a>
             </div>
