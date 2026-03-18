@@ -17,7 +17,7 @@ include __DIR__ . "/../src/lib/functions.php";
                 <div class="card-badge"><?= abbrevierPays($film["pays"]) ?></div>
                 <div class="card-info">
                     <h3><?= $film["titre"] ?></h3>
-                    <p><?= $film["genre"] ?> - <?= convertirMinutes($film["duree"]) ?></p>
+                    <p><?= $film["genre"] ?> • <?= convertirMinutes($film["duree"]) ?></p>
                     <p class="synopsis"><?= $film["synopsis"] ?></p>
                 </div>
                 <a href="#" class="card-button">Détails</a>

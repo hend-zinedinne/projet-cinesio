@@ -41,6 +41,14 @@ footer {
     gap:10px;
 }
 
+.boutons-menu li a {
+    font-weight:bold;
+}
+
+.gris {
+    color:gray;
+}
+
 .noir {
     color:black;
 }
@@ -99,14 +107,15 @@ footer {
 
 .card-info {
     padding:5px 20px;
+    height:100%
+}
+
+.card-info * {
+    margin:10px 0px;
 }
 
 .card-info p {
     color:gray;
-}
-
-h3 {
-    margin:0px;
 }
 
 .card-button {

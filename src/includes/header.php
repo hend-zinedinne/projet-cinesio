@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
     <title><?= $titre ?></title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -18,8 +19,8 @@
                     </svg> Ciné</span><span class="noir">SIO</span></a>
             <ul class="boutons-menu">
                 <li><a href="#" span class="violet">Accueil</a></li>
-                <li><a href="#"><span class="noir">Catalogue</span></a></li>
-                <li><a href="#"><span class="noir">Contact</span></a></li>
+                <li><a href="#"><span class="gris">Catalogue</span></a></li>
+                <li><a href="#"><span class="gris">Contact</span></a></li>
             </ul>
         </nav>
     </header>
