@@ -3,11 +3,14 @@
 require_once __DIR__ . "/../database/connection.php";
 
 
-function getAllFilms(): array
+function getDataFromFilms(): array
 {
     $connexion = getConnexion();
 
-    $requeteSQL = "SELECT * FROM film";
+    $requeteSQL = "SELECT film.id, film.titre, film.date_sortie, film.duree, film.synopsis, film.image, genre.nom AS nom_genre, pays.nom AS nom_pays, pays.initiale AS pays_initiale
+    FROM film, genre, pays
+    WHERE genre.id = film.id_genre
+    AND film.id_pays = pays.id";
     $requete = $connexion->prepare($requeteSQL);
     $requete->execute();
 
@@ -15,61 +18,25 @@ function getAllFilms(): array
 
     return $films;
 }
-
-function getNombreFilms(): int
-{
-    $connexion = getConnexion();
-
-    $requeteSQL = "SELECT COUNT(*) FROM film";
-    $requete = $connexion->prepare($requeteSQL);
-    $requete->execute();
-
-    $nombreFilms = $requete->fetchColumn();
-
-    return $nombreFilms;
-}
-function getPaysAbregeFromFilm($idFilm): ?string
+function getFilmFromID($idFilm): ?array
 {
     $connexion = getConnexion();
 
     // Requête paramétrée
-    $requeteSQL = "SELECT initiale
-    FROM film, pays
-    WHERE film.id_pays = pays.id
+    $requeteSQL = "SELECT film.id, film.titre, film.date_sortie, film.duree, film.synopsis, film.image, genre.nom AS nom_genre, pays.nom AS nom_pays, pays.initiale AS pays_initiale
+    FROM film, genre, pays
+    WHERE genre.id = film.id_genre
+    AND film.id_pays = pays.id
     AND film.id = :id";
     $requete = $connexion->prepare($requeteSQL);
-    // Execution : donner une valeur au paramètre :nom
     $requete->bindValue("id", $idFilm);
     $requete->execute();
 
-    $pays = $requete->fetchColumn();
+    $nomFilm = $requete->fetch(PDO::FETCH_ASSOC);
 
-    if (!$pays) {
+    if (!$nomFilm) {
         return null;
     } else {
-        return $pays;
-    }
-}
-
-function getGenreFromFilm($idFilm): ?string
-{
-    $connexion = getConnexion();
-
-    // Requête paramétrée
-    $requeteSQL = "SELECT genre.nom
-    FROM film, genre
-    WHERE film.id_genre = genre.id
-    AND film.id = :id";
-    $requete = $connexion->prepare($requeteSQL);
-    // Execution : donner une valeur au paramètre :nom
-    $requete->bindValue("id", $idFilm);
-    $requete->execute();
-
-    $pays = $requete->fetchColumn();
-
-    if (!$pays) {
-        return null;
-    } else {
-        return $pays;
+        return $nomFilm;
     }
 }
