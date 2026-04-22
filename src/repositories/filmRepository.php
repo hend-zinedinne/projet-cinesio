@@ -40,3 +40,6 @@ function getFilmFromID($idFilm): ?array
         return $nomFilm;
     }
 }
+
+function addFilm($titreFilm, $genreFilm, $dateFilm, $dureeFilm, $synopsisFilm, $idImageFilm, $idPaysFilm): {
+}

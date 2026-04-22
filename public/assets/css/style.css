@@ -225,3 +225,98 @@ footer {
     padding:16px 48px;
     background-color:black;
 }
+
+.card-creer {
+    display:flex;
+    flex-direction:row;
+    overflow:hidden;
+    border-radius:15px;
+    margin:30px 120px;
+    height:600px;
+    width:950px;
+    background:white;
+    border:1px solid lightgray;
+}
+
+.card-creer-form {
+    margin-bottom:20px;
+}
+
+.card-creer-btn {
+    width:100%;
+    padding:10px;
+    height:48px;
+    font-size:16px;
+    color:white;
+    background-color:#7000da;
+    border-radius:6px;
+    font-weight:bold;
+    border:none;
+    cursor:pointer;
+    border: 1px solid #beaccf
+}
+
+.required {
+    color:firebrick;
+}
+
+.card-header h1 {
+    font-size:24px;
+    text-align:center;
+    margin-bottom:10px;
+}
+
+label {
+    display:block;
+    font-size:14px;
+    margin-bottom:6px;
+}
+
+input[type="text"],
+input[type="email"],
+select {
+    width:100%;
+    padding:10px;
+    border:1px solid lightgray;
+    border-radius:6px;
+    font-size:15px;
+}
+
+input:focus ,select:focus {
+    outline:none;
+    border-color:dodgerblue;
+    box-shadow:0 0 3px 3px rgba(30, 144, 255, 0.15)
+}
+
+.hint {
+    color:gray;
+    font-size:12px;
+    margin-top:4px;
+}
+
+.legend {
+    font-size:12px;
+    color:gray;
+    margin:15px 0px;
+}
+
+.card hr {
+    margin:6px 0px;
+}
+
+.message-erreur {
+    color:firebrick;
+    font-size:12px;
+    margin-top:4px;
+}
+
+.message-succes {
+    color:forestgreen;
+    font-size:12px;
+    background-color:rgb(206, 223, 206);
+    border-radius:6px;
+    border:1px seagreen solid;
+    padding:10px;
+    text-align:center;
+    margin-bottom:20px;
+}
