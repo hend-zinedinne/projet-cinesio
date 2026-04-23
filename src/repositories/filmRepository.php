@@ -41,5 +41,58 @@ function getFilmFromID($idFilm): ?array
     }
 }
 
-function addFilm($titreFilm, $genreFilm, $dateFilm, $dureeFilm, $synopsisFilm, $idImageFilm, $idPaysFilm): {
+function addFilm($titreFilm, $genreFilm, $dateFilm, $dureeFilm, $synopsisFilm, $idImageFilm, $idPaysFilm)
+{
+    $connexion = getConnexion();
+
+    $requeteSQL = "INSERT INTO film(titre,date_sortie,duree,synopsis,image,id_genre,id_pays
+    VALUES(
+    :titre,
+    :date_sortie,
+    :duree,
+    :synopsis,
+    :image,
+    :id_genre,
+    :id_pays
+    )";
+    $requete = $connexion->prepare($requeteSQL);
+    $requete->bindValue('titre', $titreFilm);
+    $requete->bindValue('date_sortie', $genreFilm);
+    $requete->bindValue('duree', $dateFilm);
+    $requete->bindValue('synopsis', $dureeFilm);
+    $requete->bindValue('image', $synopsisFilm);
+    $requete->bindValue('id_genre', $idImageFilm);
+    $requete->bindValue('id_pays', $idPaysFilm);
+    $requete->execute(['titre' => $titreFilm]);
+
+    $films = $requete->fetchAll(PDO::FETCH_ASSOC);
 }
+function getDataFromPays(): array
+{
+    $connexion = getConnexion();
+
+    $requeteSQL = "id, nom, initiale
+    FROM pays";
+    $requete = $connexion->prepare($requeteSQL);
+    $requete->execute();
+
+    $films = $requete->fetchAll(PDO::FETCH_ASSOC);
+
+    return $films;
+}
+
+function getDataFromGenre(): array
+{
+    $connexion = getConnexion();
+
+    $requeteSQL = "SELECT id, nom
+    FROM genre";
+    $requete = $connexion->prepare($requeteSQL);
+    $requete->execute();
+
+    $films = $requete->fetchAll(PDO::FETCH_ASSOC);
+
+    return $films;
+}
+
+print_r(getDataFromGenre());
