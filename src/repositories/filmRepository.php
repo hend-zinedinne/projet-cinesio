@@ -41,7 +41,7 @@ function getFilmFromID($idFilm): ?array
     }
 }
 
-function addFilm($titreFilm, $genreFilm, $dateFilm, $dureeFilm, $synopsisFilm, $idImageFilm, $idPaysFilm)
+function addFilm(Array $film)
 {
     $connexion = getConnexion();
 
@@ -56,32 +56,31 @@ function addFilm($titreFilm, $genreFilm, $dateFilm, $dureeFilm, $synopsisFilm, $
     :id_pays
     )";
     $requete = $connexion->prepare($requeteSQL);
-    $requete->bindValue('titre', $titreFilm);
-    $requete->bindValue('date_sortie', $genreFilm);
-    $requete->bindValue('duree', $dateFilm);
-    $requete->bindValue('synopsis', $dureeFilm);
-    $requete->bindValue('image', $synopsisFilm);
-    $requete->bindValue('id_genre', $idImageFilm);
-    $requete->bindValue('id_pays', $idPaysFilm);
-    $requete->execute(['titre' => $titreFilm]);
+    
+    foreach($film as $cle => $valeurFilm) {
+        echo $valeurFilm;
+        $requete->bindValue($cle, $valeurFilm);
+    }
+
+    $requete->execute();
 
     $films = $requete->fetchAll(PDO::FETCH_ASSOC);
 }
-function getDataFromPays(): array
+function getPays(): array
 {
     $connexion = getConnexion();
 
-    $requeteSQL = "id, nom, initiale
+    $requeteSQL = "SELECT id, nom, initiale
     FROM pays";
     $requete = $connexion->prepare($requeteSQL);
     $requete->execute();
 
-    $films = $requete->fetchAll(PDO::FETCH_ASSOC);
+    $pays = $requete->fetchAll(PDO::FETCH_ASSOC);
 
-    return $films;
+    return $pays;
 }
 
-function getDataFromGenre(): array
+function getGenres(): array
 {
     $connexion = getConnexion();
 
@@ -90,9 +89,8 @@ function getDataFromGenre(): array
     $requete = $connexion->prepare($requeteSQL);
     $requete->execute();
 
-    $films = $requete->fetchAll(PDO::FETCH_ASSOC);
+    $genre = $requete->fetchAll(PDO::FETCH_ASSOC);
 
-    return $films;
+    return $genre;
 }
 
-print_r(getDataFromGenre());

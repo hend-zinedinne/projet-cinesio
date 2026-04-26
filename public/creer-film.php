@@ -4,27 +4,20 @@ include __DIR__ . "/../src/includes/header.php";
 require_once __DIR__ . "/../src/lib/functions.php";
 require_once __DIR__ . "/../src/repositories/filmRepository.php";
 $films = getDataFromFilms();
+$genres = getGenres();
+$pays = getPays();
 
-$genreOptions =
-    [
-        "" => "-- Sélectionnez un genre --",
-        "1" => "Science-Fiction",
-        "2" => "Drame",
-        "3" => "Thriller",
-        "4" => "Comédie",
-        "5" => "Action",
-        "6" => "Crime",
-        "7" => "Animation",
-    ];
+$genreOptions = ["" => "-- Selectionnez un genre --"];
 
-$paysOptions =
-    [
-        "" => "-- Sélectionnez un pays --",
-        "1" => "USA",
-        "2" => "Corée Du Sud",
-        "3" => "France",
-        "4" => "Japon",
-    ];
+foreach ($genres as $cle => $genre) {
+    $genreOptions[$cle] = $genre["nom"];
+}
+
+$paysOptions = ["" => "-- Selectionnez un pays --"];
+
+foreach ($pays as $cle => $pays_) {
+    $paysOptions[$cle] = $pays_["nom"];
+}
 
 // Définir une variable par champs du formulaire
 $titre = '';
@@ -62,15 +55,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if ($date_sortie == '') {
-        $erreurs["genre"] = "Aucune date n'a été saisie.";
-    } elseif (DateTime::createFromFormat('d/m/Y', $myString) == false) {
-        $erreurs["genre"] = "Le genre séléctionné est invalide.";
+        $erreurs["date_sortie"] = "Aucune date n'a été saisie.";
+    } elseif (date_create_from_format('Y-m-d', $date_sortie)->format('Y-m-d') != $date_sortie) {
+        $erreurs["date_sortie"] = "La date saisie est invalide." .  date_create_from_format('Y-m-d', $date_sortie)->format('Y-m-d');
     }
 
     if ($duree == '') {
-        $erreurs["genre"] = "Aucune durée n'a été saisie.";
-    } elseif (!is_int($duree)) {
-        $erreurs["genre"] = "La durée saisie n'est pas un nombre.";
+        $erreurs["duree"] = "Aucune durée n'a été saisie.";
+    } elseif (!is_numeric($duree)) {
+        $erreurs["duree"] = "La durée saisie n'est pas un nombre.";
     }
 
     if ($synopsis == '') {
@@ -82,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($image == '') {
         $erreurs["image"] = "Aucune image n'a été ajoutée.";
     } elseif (!filter_var($image, FILTER_VALIDATE_URL)) {
-        $erreurs["image"] = "Le genre séléctionné est invalide.";
+        $erreurs["image"] = "Le lien saisi est invalide.";
     }
 
     if ($pays == '') {
@@ -96,7 +89,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($erreurs)) {
         $succes = true;
 
-        
+        $film = [
+            "titre" => $titre,
+            "date_sortie" => $date_sortie,
+            "duree" => $duree,
+            "synopsis" => $synopsis,
+            "image" => $image,
+            "id_genre" => $genre,
+            "id_pays" => $pays
+        ];
+
+        addFilm($film);
 
         // Réinitialiser les variables avec ''
         $titre = '';
@@ -138,65 +141,71 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="hint">3 caractères minimum</div>
             </div>
 
-            <!-- GENRE -->
-            <div class="card-creer-form">
-                <label for="genre">Genre :<span class="required">*</span> :</label>
-                <select id="genre" name="genre" " required>
-                    <?php foreach ($genreOptions as $valeur => $genreOption): ?>
-                                                                                            <option value=" <?= $valeur ?>"
-                        <?php if ($valeur == $genreOption): ?>selected<?php endif; ?>>
-                        <?= $genreOption ?> </option> <?php endforeach; ?> <!-- remplissage dynamique des options -->
-                </select>
-                <?php if (isset($erreurs["genre"])): ?>
-                    <div class="message-erreur"><?= $erreurs['genre'] ?></div>
-                <?php endif; ?>
-            </div>
 
-            <!-- DATE -->
-            <div class="card-creer-form">
-                <label for="date_sortie">Date de sortie :<span class="required">*</span> :</label>
-                <input type="date" id="date_sortie" name="date_sortie" value="<?= $date_sortie ?>">
-                <!-- Afficher l'erreur si présente -->
-                <?php if (isset($erreurs["date_sortie"])): ?>
-                    <div class="message-erreur">
-                        <?= $erreurs['date_sortie'] ?>
-                    </div>
-                <?php endif; ?>
-            </div>
+            <div class="card-creer-2">
+                <!-- DATE -->
+                <div class="card-creer-form">
+                   <label for="date_sortie">Date de sortie :<span class="required">*</span> :</label>
+                        <input type="date" id="date_sortie" name="date_sortie" value="<?= $date_sortie ?>">
+                        <!-- Afficher l'erreur si présente -->
+                        <?php if (isset($erreurs["date_sortie"])): ?>
+                            <div class="message-erreur">
+                                <?= $erreurs['date_sortie'] ?>
+                            </div>
+                        <?php endif; ?>
+                </div>
+            
 
             <!-- DUREE -->
-            <div class="card-creer-form">
-                <label for="duree">Durée :<span class="required">*</span> :</label>
-                <input type="number" id="duree" name="duree" value="<?= $duree ?>" required>
-                <!-- Afficher l'erreur si présente -->
-                <?php if (isset($erreurs["duree"])): ?>
-                    <div class="message-erreur"><?= $erreurs['duree'] ?></div>
-                <?php endif; ?>
-                <div class="hint">En minutes uniquement</div>
+                <div class="card-creer-form">
+                    <label for="duree">Durée :<span class="required">*</span> :</label>
+                        <input type="number" id="duree" name="duree" value="<?= $duree ?>" placeholder="Ex: 165" required>
+                        <!-- Afficher l'erreur si présente -->
+                        <?php if (isset($erreurs["duree"])): ?>
+                            <div class="message-erreur"><?= $erreurs['duree'] ?></div>
+                        <?php endif; ?>
+                    <div class="hint">En minutes uniquement</div>
+                </div>
+
             </div>
 
             <!-- SYNOPSIS -->
             <div class="card-creer-form">
                 <label for="synopsis">Synopsis :<span class="required">*</span> :</label>
-                <input type="text" id="synopsis" name="synopsis" placeholder="Il était une fois..."
-                    value="<?= $synopsis ?>" required minlength="5">
+                <input type="textarea" id="synopsis" name="synopsis" placeholder="Il était une fois..."
+                    value="<?= $synopsis ?>" required minlength="10">
                 <!-- Afficher l'erreur si présente -->
                 <?php if (isset($erreurs["synopsis"])): ?>
                     <div class="message-erreur"><?= $erreurs['synopsis'] ?></div>
                 <?php endif; ?>
-                <div class="hint">5 caractères minimum</div>
+                <div class="hint">10 caractères minimum</div>
             </div>
 
             <!-- IMAGE -->
             <div class="card-creer-form">
-                <label for="image">Image :<span class="required">*</span> :</label>
-                <input type="link" id="image" name="image" placeholder="https://lien.fr" value="<?= $image ?>" required
+                <label for="image">Affiche web (URL de l'image) :<span class="required">*</span> :</label>
+                <input type="link" id="image" name="image" placeholder="https://exemple.com/image.jpg" value="<?= $image ?>" required
                     minlength="5">
                 <!-- Afficher l'erreur si présente -->
                 <?php if (isset($erreurs["image"])): ?>
                     <div class="message-erreur"><?= $erreurs['image'] ?></div>
                 <?php endif; ?>
                 <div class="hint">Lien valide requis</div>
+            </div>
+
+            <div class="card-creer-2">
+                        <!-- GENRE -->
+            <div class="card-creer-form">
+                <label for="genre">Genre :<span class="required">*</span> :</label>
+                <select id="genre" name="genre" " required>
+                    <?php foreach ($genreOptions as $valeur => $genreOption): ?>
+                            <option value=" <?= $valeur ?>"
+                        <?php if ($valeur == $genreOption): ?>selected<?php endif; ?>>
+                        <?= $genreOption ?> </option> <?php endforeach; ?> <!-- remplissage dynamique des options -->
+                </select>
+                <?php if (isset($erreurs["genre"])): ?>
+                    <div class="message-erreur"><?= $erreurs['genre'] ?></div>
+                <?php endif; ?>
             </div>
 
             <!-- PAYS -->
@@ -213,10 +222,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <?php endif; ?>
             </div>
 
+            </div>
+
             <p class="legend">Le caractère <span class="required">*</span> indique un champ obligatoire.</p>
 
             <button type="submit" class="card-creer-btn">
-                Ajouter le film
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+            </svg>    
+            Ajouter ce film au catalogue
+
             </button>
 
         </form>
