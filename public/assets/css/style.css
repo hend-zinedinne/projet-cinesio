@@ -223,6 +223,29 @@ footer {
     background-color:black;
 }
 
+.card-auth {
+    display:flex;
+    flex-direction:row;
+    overflow:hidden;
+    border-radius:15px;
+    height:fit-content;
+    width:fit-content;
+    background:white;
+    border:1px solid lightgray;
+    padding:50px;
+    justify-content:space-around;
+    align-items:center;
+    margin:auto;
+    margin-top:50px
+}
+
+.lien-inscription-connexion > * {
+    text-align:center;
+    color:black;
+    text-decoration:none;
+    font-size:16px;
+}
+
 .card-creer {
     display:flex;
     flex-direction:row;
@@ -300,6 +323,8 @@ input[type="date"],
 input[type="textarea"],
 input[type="number"],
 input[type="link"],
+input[type="email"],
+input[type="password"],
 select {
     width:100%;
     padding:10px;

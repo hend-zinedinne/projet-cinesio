@@ -56,14 +56,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($date_sortie == '') {
         $erreurs["date_sortie"] = "Aucune date n'a été saisie.";
-    } elseif (date_create_from_format('Y-m-d', $date_sortie)->format('Y-m-d') != $date_sortie) {
-        $erreurs["date_sortie"] = "La date saisie est invalide." .  date_create_from_format('Y-m-d', $date_sortie)->format('Y-m-d');
+    } elseif (date_create_from_format('Y-m-d', $date_sortie)->format('Y-m-d') !== $date_sortie) {
+        $erreurs["date_sortie"] = "La date saisie est invalide.";
     }
 
     if ($duree == '') {
         $erreurs["duree"] = "Aucune durée n'a été saisie.";
     } elseif (!is_numeric($duree)) {
         $erreurs["duree"] = "La durée saisie n'est pas un nombre.";
+    } elseif ($nombre <= 0) {
+        $erreurs["duree"] = "La durée saisie est invalide.";
     }
 
     if ($synopsis == '') {
@@ -90,11 +92,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $succes = true;
 
         $film = [
-            "titre" => $titre,
+            "titre" => htmlspecialchars($titre),
             "date_sortie" => $date_sortie,
             "duree" => $duree,
-            "synopsis" => $synopsis,
-            "image" => $image,
+            "synopsis" => htmlspecialchars($synopsis),
+            "image" => htmlspecialchars($image),
             "id_genre" => $genre,
             "id_pays" => $pays
         ];

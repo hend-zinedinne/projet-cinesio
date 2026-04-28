@@ -20,6 +20,8 @@
             <ul class="boutons-menu">
                 <li><a href="#"><span class="violet">Accueil</a></li>
                 <li><a href="index.php"><span class="gris">Catalogue</span></a></li>
+                <li><a href="inscription.php"><span class="gris">Inscription</span></a></li>
+                <li><a href="connexion.php"><span class="gris">Connexion</span></a></li>
                 <li><a href="creer-film.php"><span class="gris">Ajouter un film</span></a></li>
                 <li><a href="#"><span class="gris">Contact</span></a></li>
             </ul>
