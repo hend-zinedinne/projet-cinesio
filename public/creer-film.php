@@ -10,13 +10,13 @@ $pays = getPays();
 $genreOptions = ["" => "-- Selectionnez un genre --"];
 
 foreach ($genres as $cle => $genre) {
-    $genreOptions[$cle] = $genre["nom"];
+    $genreOptions[$cle + 1] = $genre["nom"];
 }
 
 $paysOptions = ["" => "-- Selectionnez un pays --"];
 
 foreach ($pays as $cle => $pays_) {
-    $paysOptions[$cle] = $pays_["nom"];
+    $paysOptions[$cle + 1] = $pays_["nom"];
 }
 
 // Définir une variable par champs du formulaire
@@ -44,8 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($titre == '') {
         $erreurs["titre"] = "Le titre n'a pas été saisi.";
-    } elseif (mb_strlen($titre) < 3) {
-        $erreurs["titre"] = "Le titre a moins de 3 caractères.";
+    } elseif (mb_strlen($titre) < 2) {
+        $erreurs["titre"] = "Le titre a moins de 2 caractères.";
     }
 
     if ($genre == '') {
@@ -68,8 +68,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($synopsis == '') {
         $erreurs["synopsis"] = "Aucun synopsis n'a été saisi.";
-    } elseif (mb_strlen($titre) < 5) {
-        $erreurs["synopsis"] = "Le synopsis a moins de 5 caractères.";
+    } elseif (mb_strlen($synopsis) < 10) {
+        $erreurs["synopsis"] = "Le synopsis a moins de 10 caractères.";
     }
 
     if ($image == '') {
@@ -116,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <main>
 
     <?php if ($succes): ?>
-        <div class="message-succes">Le profil a été créé avec succès.</div>
+        <div class="message-succes">Le film a été ajouté avec succès.</div>
     <?php endif; ?>
 
     <a href="index.php" class="bouton-retour gris"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -133,12 +133,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="card-creer-form">
                 <label for="titre">Titre :<span class="required">*</span> :</label>
                 <input type="text" id="titre" name="titre" placeholder="Ex: The Green Line" value="<?= $titre ?>"
-                    required minlength="3">
+                    required minlength="2">
                 <!-- Afficher l'erreur si présente -->
                 <?php if (isset($erreurs["titre"])): ?>
                     <div class="message-erreur"><?= $erreurs['titre'] ?></div>
                 <?php endif; ?>
-                <div class="hint">3 caractères minimum</div>
+                <div class="hint">2 caractères minimum</div>
             </div>
 
 
@@ -172,8 +172,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <!-- SYNOPSIS -->
             <div class="card-creer-form">
                 <label for="synopsis">Synopsis :<span class="required">*</span> :</label>
-                <input type="textarea" id="synopsis" name="synopsis" placeholder="Il était une fois..."
-                    value="<?= $synopsis ?>" required minlength="10">
+                <textarea type="textarea" rows="10" cols="100" id="synopsis" name="synopsis" placeholder="Le héros commence son périple..." value="<?= $synopsis ?>" required minlength="10"></textarea>
                 <!-- Afficher l'erreur si présente -->
                 <?php if (isset($erreurs["synopsis"])): ?>
                     <div class="message-erreur"><?= $erreurs['synopsis'] ?></div>

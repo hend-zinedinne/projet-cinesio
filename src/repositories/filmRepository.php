@@ -45,7 +45,7 @@ function addFilm(Array $film)
 {
     $connexion = getConnexion();
 
-    $requeteSQL = "INSERT INTO film(titre,date_sortie,duree,synopsis,image,id_genre,id_pays
+    $requeteSQL = "INSERT INTO film(titre,date_sortie,duree,synopsis,image,id_genre,id_pays)
     VALUES(
     :titre,
     :date_sortie,
@@ -58,13 +58,10 @@ function addFilm(Array $film)
     $requete = $connexion->prepare($requeteSQL);
     
     foreach($film as $cle => $valeurFilm) {
-        echo $valeurFilm;
         $requete->bindValue($cle, $valeurFilm);
     }
 
     $requete->execute();
-
-    $films = $requete->fetchAll(PDO::FETCH_ASSOC);
 }
 function getPays(): array
 {
