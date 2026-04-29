@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $erreurs["duree"] = "Aucune durée n'a été saisie.";
     } elseif (!is_numeric($duree)) {
         $erreurs["duree"] = "La durée saisie n'est pas un nombre.";
-    } elseif ($nombre <= 0) {
+    } elseif ($duree <= 0) {
         $erreurs["duree"] = "La durée saisie est invalide.";
     }
 
@@ -106,7 +106,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "synopsis" => htmlspecialchars($synopsis),
             "image" => htmlspecialchars($image),
             "id_genre" => $genre,
-            "id_pays" => $pays
+            "id_pays" => $pays,
+            "id_user" => $_SESSION["utilisateur"]["id"]
         ];
 
         addFilm($film);

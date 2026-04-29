@@ -2,13 +2,15 @@
 
 require_once __DIR__ . "/../src/lib/functions.php";
 require_once __DIR__ . "/../src/repositories/filmRepository.php";
+require_once __DIR__ . "/../src/repositories/utilisateurRepository.php";
+
 
 $titreErreur = "";
 $messageErreur = "";
 $filmRecherche = null;
 $id = $_GET['id'] ?? '';
 
-$films = getDataFromFilms();
+$filmRecherche = getFilmFromID($id);
 
 if ($id === '') {
     $titreErreur = "Identifiant incorrect";
@@ -20,12 +22,6 @@ if ($id === '') {
     $titreErreur = "Identifiant incorrect";
     $messageErreur = "L'identifiant du film doit être une valeur positive.";
 } else {
-    foreach ($films as $film) {
-        if ($film['id'] == $id) {
-            $filmRecherche = $film;
-            break;
-        }
-    }
     if ($filmRecherche === null) {
         $titreErreur = "Film introuvable";
         $messageErreur = "Désolé, le film que vous cherchez n'existe pas ou n'est plus disponible dans le catalogue.";
@@ -59,6 +55,7 @@ include __DIR__ . "/../src/includes/header.php";
                     •
                     <?= substr($filmRecherche['date_sortie'], 0, 4) ?>
                 </p>
+                <p>Ajouté par <?= findUtilisateurFromFilmID($id)["pseudo"] ?></p>
                 <h1 class="card-details-titre"><?= $filmRecherche['titre'] ?></h1>
                 <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="purple" class="bi bi-clock"
                         viewBox="0 0 16 16" class="violet">

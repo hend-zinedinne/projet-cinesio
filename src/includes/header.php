@@ -37,6 +37,7 @@ $connecte = isset($_SESSION["utilisateur"]);
                     <li><a href="connexion.php"><span class="gris">Connexion</span></a></li>
                 <?php else: ?>
                     <li><a href="creer-film.php"><span class="gris">Ajouter un film</span></a></li>
+                    <li><a href="user-films.php"><span class="gris">Mes films</span></a></li>
                     <li><a href="#" class="bouton-compte noir"> <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                 height="24" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
                                 <path

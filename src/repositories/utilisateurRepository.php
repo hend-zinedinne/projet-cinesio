@@ -78,3 +78,24 @@ function addUtilisateur(array $data)
 
     $requete->execute();
 }
+
+function findUtilisateurFromFilmID(int $filmID): ?array
+{
+    $connexion = getConnexion();
+
+    // Requête paramétrée
+    $requeteSQL = "SELECT *
+    FROM utilisateur, film
+    WHERE film.id_cree_utilisateur = utilisateur.id
+    AND :filmID = film.id";
+    $requete = $connexion->prepare($requeteSQL);
+    $requete->bindValue("filmID", $filmID);
+    $requete->execute();
+
+    $resultat = $requete->fetch(PDO::FETCH_ASSOC);
+    if (!$resultat) {
+        return null;
+    } else {
+        return $resultat;
+    }
+}
