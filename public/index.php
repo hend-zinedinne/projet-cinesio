@@ -1,4 +1,5 @@
 <?php
+
 $titre = "CinéSIO";
 include __DIR__ . "/../src/includes/header.php";
 require_once __DIR__ . "/../src/lib/functions.php";
@@ -19,11 +20,12 @@ $films = getDataFromFilms();
                 <div class="card-info">
                     <h3><?= $film["titre"] ?></h3>
                     <p><?= $film["nom_genre"] ?> • <?= convertirMinutes($film['duree']) ?></p>
-                    <p> <?php if (strlen($film['synopsis']) > 80):?>
-                            <?= substr($film["synopsis"],0, 80).'...' ?> 
+                    <p> <?php if (strlen($film['synopsis']) > 80): ?>
+                            <?= substr($film["synopsis"], 0, 80) . '...' ?>
                         <?php else: ?>
                             <?= $film["synopsis"] ?>
-                        <?php endif; ?></p>
+                        <?php endif; ?>
+                    </p>
                 </div>
                 <a href="details-film.php?id=<?= $film['id'] ?>" class="card-button">Détails</a>
             </div>

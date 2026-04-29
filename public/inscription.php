@@ -2,6 +2,11 @@
 
 session_start();
 
+if (isset($_SESSION["utilisateur"])) {
+    header("Location: index.php");
+    exit;
+}
+
 $titre = "CinéSIO";
 include __DIR__ . "/../src/includes/header.php";
 require_once __DIR__ . "/../src/lib/functions.php";
@@ -31,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $erreurs["email"] = "Aucun e-mail n'a été saisi.";
     } elseif (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
         $erreurs["email"] = "L'e-mail saisi est invalide.";
-    } elseif (findUtilisateurByEmail($email) === $email) {
+    } elseif (findUtilisateurByEmail($email)["email"] === $email) {
         $erreurs["email"] = "Cet e-mail est déjà utilisé par un autre utilisateur.";
     }
 
@@ -39,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $erreurs["pseudo"] = "Aucun pseudonyme n'a été saisi.";
     } elseif (mb_strlen($pseudo) < 3) {
         $erreurs["pseudo"] = "Le pseudonyme a moins de 3 caractères.";
-    } elseif (findUtilisateurByPseudo($pseudo) === $pseudo) {
+    } elseif (findUtilisateurByPseudo($pseudo)["pseudo"] === $pseudo) {
         $erreurs["pseudo"] = "Ce pseudonyme est déjà utilisé par un autre utilisateur.";
     }
 
@@ -81,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <main>
 
     <h2>Créer un compte</h2>
-    <p>Rejoignez la communauté CinéSIO pour accéder à toutes les fonctionnalités.</p>
+    <p class="gris">Rejoignez la communauté CinéSIO pour accéder à toutes les fonctionnalités.</p>
 
     <?php if ($succes): ?>
         <div class="message-succes">Votre compte a été ajouté avec succès.</div>
@@ -89,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <div class="card-auth">
         <form action="" method="POST">
-            <!-- TITRE -->
+            <!-- EMAIL -->
             <div class="card-creer-form">
                 <label for="email"><strong>Adresse E-mail</strong><span class="required">*</span> :</label>
                 <input type="email" id="email" name="email" placeholder="Ex: jean.dupont@email.com"
@@ -100,9 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <?php endif; ?>
             </div>
 
-
-
-            <!-- DUREE -->
+            <!-- PSEUDO -->
             <div class="card-creer-form">
                 <label for="pseudo"><strong>Pseudonyme</strong><span class="required">*</span> :</label>
                 <input type="text" id="pseudo" name="pseudo" value="<?= $pseudo ?>" placeholder="Ex: JeanD88"
@@ -117,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
             <div class="card-creer-2">
-                <!-- DATE -->
+                <!-- MOT DE PASSE -->
                 <div class="card-creer-form">
                     <label for="mot_de_passe"><strong>Mot de passe</strong><span class="required">*</span> :</label>
                     <input type="password" id="mot_de_passe" name="mot_de_passe" value="<?= $mot_de_passe ?>"
@@ -132,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
 
 
-                <!-- DUREE -->
+                <!-- CONFIRMATION DU MOT DE PASSE -->
                 <div class="card-creer-form">
                     <label for="confirmation"><strong>Confirmation</strong><span class="required">*</span> :</label>
                     <input type="password" id="confirmation" name="confirmation" value="<?= $confirmation ?>" required>
@@ -159,7 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </button>
 
             <div class="lien-inscription-connexion">
-                <p>Déjà un compte ? <a href="connexion.php">Connectez-vous</a></p>
+                <p>Déjà un compte ? <a href="connexion.php" class="noir"><strong>Connectez-vous</strong></a></p>
             </div>
 
         </form>

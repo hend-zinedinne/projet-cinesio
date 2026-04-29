@@ -22,19 +22,19 @@ function createUtilisateur(array $utilisateur)
     $requete->execute();
 }
 
-function findUtilisateurByEmail(string $email): ?string
+function findUtilisateurByEmail(string $email): ?array
 {
     $connexion = getConnexion();
 
     // Requête paramétrée
-    $requeteSQL = "SELECT email
+    $requeteSQL = "SELECT *
     FROM utilisateur
     WHERE :email = email";
     $requete = $connexion->prepare($requeteSQL);
     $requete->bindValue("email", $email);
     $requete->execute();
 
-    $resultat = $requete->fetch(PDO::FETCH_COLUMN);
+    $resultat = $requete->fetch(PDO::FETCH_ASSOC);
 
     if (!$resultat) {
         return null;
@@ -44,19 +44,19 @@ function findUtilisateurByEmail(string $email): ?string
 }
 
 
-function findUtilisateurByPseudo(string $pseudo): ?string
+function findUtilisateurByPseudo(string $pseudo): ?array
 {
     $connexion = getConnexion();
 
     // Requête paramétrée
-    $requeteSQL = "SELECT pseudo
+    $requeteSQL = "SELECT *
     FROM utilisateur
     WHERE :pseudo = pseudo";
     $requete = $connexion->prepare($requeteSQL);
     $requete->bindValue("pseudo", $pseudo);
     $requete->execute();
 
-    $resultat = $requete->fetch(PDO::FETCH_COLUMN);
+    $resultat = $requete->fetch(PDO::FETCH_ASSOC);
     if (!$resultat) {
         return null;
     } else {

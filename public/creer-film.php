@@ -1,4 +1,12 @@
 <?php
+
+session_start();
+
+if (!isset($_SESSION["utilisateur"])) {
+    header("Location: connexion.php");
+    exit;
+}
+
 $titre = "CinéSIO";
 include __DIR__ . "/../src/includes/header.php";
 require_once __DIR__ . "/../src/lib/functions.php";
